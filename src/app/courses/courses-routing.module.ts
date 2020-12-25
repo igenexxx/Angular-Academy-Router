@@ -1,12 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { CourseComponent } from './course/course.component';
 import { HomeComponent } from './home/home.component';
+import { CourseResolver } from './services/course.resolver';
 
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
+  },
+  {
+    path: ':courseUrl',
+    component: CourseComponent,
+    resolve: {
+      course: CourseResolver,
+    }
   }
 ];
 
@@ -16,7 +25,7 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [
-
+    CourseResolver,
   ]
 })
 export class CoursesRoutingModule {}
