@@ -1,7 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
 import {LoadingService} from './loading.service';
-import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart, RouteConfigLoadEnd,
+  RouteConfigLoadStart,
+  Router
+} from '@angular/router';
 
 @Component({
   selector: 'loading',
@@ -9,17 +15,30 @@ import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Route
   styleUrls: ['./loading.component.css']
 })
 export class LoadingComponent implements OnInit {
+  @Input() routing = false;
+  @Input() detectRoutingOngoing = false;
 
-  @Input()
-  routing: boolean = false;
-
-  constructor(public loadingService: LoadingService) {
+  constructor(
+    public loadingService: LoadingService,
+    private router: Router,
+  ) {
 
   }
 
   ngOnInit() {
-
+    if (this.detectRoutingOngoing) {
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationStart || event instanceof RouteConfigLoadStart) {
+          this.loadingService.loadingOn();
+        } else if ([
+          NavigationEnd,
+          NavigationCancel,
+          NavigationError,
+          RouteConfigLoadEnd
+        ].some(parentClass => event instanceof parentClass)) {
+          this.loadingService.loadingOff();
+        }
+      });
+    }
   }
-
-
 }
