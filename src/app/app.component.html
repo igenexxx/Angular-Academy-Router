@@ -9,6 +9,7 @@
         mat-button
         routerLink="/courses"
         routerLinkActive="menu-item-active"
+        [routerLinkActiveOptions]="{ exact: true }"
       >
         <span>Courses</span>
       </a>
@@ -35,7 +36,12 @@
 
     </div>
 
-    <a mat-button class="menu-item" *ngIf="auth.isLoggedIn$ | async">
+    <a
+      mat-button
+      class="menu-item"
+      *ngIf="auth.isLoggedIn$ | async"
+      [routerLink]="[{ outlets: { chat: ['helpdesk-chat'] } }]"
+    >
       <mat-icon>help</mat-icon>
     </a>
 
@@ -63,3 +69,4 @@
 
 </mat-sidenav-container>
 
+<router-outlet name="chat"></router-outlet>
