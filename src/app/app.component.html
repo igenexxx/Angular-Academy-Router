@@ -23,6 +23,7 @@
       </a>
 
       <a
+        *ngIf="auth.isLoggedOut$ | async"
         mat-button
         class="menu-item"
         routerLink="login"

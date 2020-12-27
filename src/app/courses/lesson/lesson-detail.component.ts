@@ -11,7 +11,7 @@ import {LessonDetail} from "../model/lesson-detail";
 })
 export class LessonDetailComponent implements OnInit {
 
-  lesson$: Observable<LessonDetail>;
+  lesson: LessonDetail;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,9 +21,7 @@ export class LessonDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lesson$ = this.route.data.pipe(
-      pluck('lesson'),
-    );
+    this.lesson = this.route.snapshot.data['lesson'];
   }
 
   previous(lesson: any): void {
